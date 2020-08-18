@@ -6,10 +6,10 @@ export default function zeitpunkte(input) {
   const [dayStartHours, dayStartMinutes] = input.day_start.split(':')
   const [dayEndHours, dayEndMinutes] = input.day_end.split(':')
 
-  const phaseStart = moment(input.phase_start)
+  const phaseStart = moment.tz(input.phase_start, input.time_zone)
   const phaseStartMillis = phaseStart.valueOf()
   const phaseStartMinutes = phaseStartMillis / millisInOneMinute
-  const phaseEnd = moment(input.phase_end)
+  const phaseEnd = moment.tz(input.phase_end, input.time_zone)
   const phaseEndMillis = phaseEnd.valueOf()
   const diffPhaseMillis = phaseEndMillis - phaseStartMillis
 
