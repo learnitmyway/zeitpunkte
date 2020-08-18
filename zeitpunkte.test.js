@@ -67,7 +67,7 @@ test('one day, 5 minutes, phase start before day start, phase end after day end,
   expect(actual[5]).toEqual(new Date('Tue Aug 03 2020 07:05 GMT+0000'))
 })
 
-test('one day, 5 minutes, phase start before day start, phase end after day end, Iceland', () => {
+test('one day, 5 minutes, phase start before day start, phase end after day end, GMT+0', () => {
   const input = {
     day_end: '08:05',
     day_start: '08:00',
@@ -82,4 +82,24 @@ test('one day, 5 minutes, phase start before day start, phase end after day end,
   expect(actual.length).toBe(6)
   expect(actual[0]).toEqual(new Date('Tue Aug 03 2020 08:00 GMT+0000'))
   expect(actual[5]).toEqual(new Date('Tue Aug 03 2020 08:05 GMT+0000'))
+})
+
+test('1 minute for 2 days, phase start before day start, phase end after day end, GMT+0', () => {
+  const input = {
+    day_end: '08:01',
+    day_start: '08:00',
+    phase_end: '2020-08-04T09:05',
+    phase_start: '2020-08-03T07:00',
+    week: '0010000',
+    time_zone: 'Iceland',
+  }
+
+  const actual = zeitpunkte(input)
+
+  expect(actual).toEqual([
+    new Date('Tue Aug 03 2020 08:00 GMT+0000'),
+    new Date('Tue Aug 03 2020 08:01 GMT+0000'),
+    new Date('Tue Aug 04 2020 08:00 GMT+0000'),
+    new Date('Tue Aug 04 2020 08:01 GMT+0000'),
+  ])
 })

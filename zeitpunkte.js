@@ -9,35 +9,46 @@ export default function zeitpunkte(input) {
   const phaseStart = moment.tz(input.phase_start, input.time_zone)
   const phaseStartMillis = phaseStart.valueOf()
   const phaseStartMinutes = phaseStartMillis / millisInOneMinute
-  const phaseEnd = moment.tz(input.phase_end, input.time_zone)
-  const phaseEndMillis = phaseEnd.valueOf()
+  const current = moment.tz(input.phase_end, input.time_zone)
+  const phaseEndMillis = current.valueOf()
   const diffPhaseMillis = phaseEndMillis - phaseStartMillis
 
   const diffPhaseMinutes = diffPhaseMillis / millisInOneMinute
-
-  const phaseStartDayStart = phaseStart
-    .hours(dayStartHours)
-    .minutes(dayStartMinutes)
-  const phaseStartDayStartMillis = phaseStartDayStart.valueOf()
-  const phaseStartDayStartMinutes = phaseStartDayStartMillis / millisInOneMinute
-
-  const phaseEndDayEnd = phaseEnd.hours(dayEndHours).minutes(dayEndMinutes)
-  const phaseEndDayEndMillis = phaseEndDayEnd.valueOf()
-  const phaseEndDayEndMinutes = phaseEndDayEndMillis / millisInOneMinute
 
   const arr = []
 
   for (let i = 0; i <= diffPhaseMinutes; i++) {
     const currentMinute = i + phaseStartMinutes
+    const currentMilli = currentMinute * millisInOneMinute
+    const current = moment.tz(currentMilli, input.time_zone)
+    const currentDayStart = moment(current)
+      .hours(dayStartHours)
+      .minutes(dayStartMinutes)
+    const currentDayStartMinutes = currentDayStart.valueOf() / millisInOneMinute
+
+    const currentDayEnd = moment(current)
+      .hours(dayEndHours)
+      .minutes(dayEndMinutes)
+    const currentDayEndMinutes = currentDayEnd.valueOf() / millisInOneMinute
 
     if (
-      currentMinute >= phaseStartDayStartMinutes &&
-      currentMinute <= phaseEndDayEndMinutes
+      currentMinute >= currentDayStartMinutes &&
+      currentMinute <= currentDayEndMinutes
     ) {
       if (arr.length === 0) {
         arr.push(currentMinute * millisInOneMinute)
       } else {
-        arr.push(arr[arr.length - 1] + millisInOneMinute)
+        const lastSlot = arr[arr.length - 1]
+        const potentialSlot = lastSlot + millisInOneMinute
+        if (
+          moment
+            .tz(currentMilli, input.time_zone)
+            .isSame(moment.tz(potentialSlot, input.time_zone), 'day')
+        ) {
+          arr.push(arr[arr.length - 1] + millisInOneMinute)
+        } else {
+          arr.push(currentMilli)
+        }
       }
     }
   }
