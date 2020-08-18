@@ -6,7 +6,7 @@ test('one day, 5 minutes, same phase as day, Europe/Berlin', () => {
     day_start: '08:00',
     phase_end: '2020-08-03T08:05',
     phase_start: '2020-08-03T08:00',
-    week: '0010000',
+    week: '0100000',
     time_zone: 'Europe/Berlin',
   }
 
@@ -22,7 +22,7 @@ test('one day, 5 minutes, phase start before day start, Europe/Berlin', () => {
     day_start: '08:00',
     phase_end: '2020-08-03T08:05',
     phase_start: '2020-08-03T07:00',
-    week: '0010000',
+    week: '0100000',
     time_zone: 'Europe/Berlin',
   }
 
@@ -39,7 +39,7 @@ test('one day, 5 minutes, phase end after day end, Europe/Berlin', () => {
     day_start: '08:00',
     phase_end: '2020-08-03T09:05',
     phase_start: '2020-08-03T08:00',
-    week: '0010000',
+    week: '0100000',
     time_zone: 'Europe/Berlin',
   }
 
@@ -56,7 +56,7 @@ test('one day, 5 minutes, phase start before day start, phase end after day end,
     day_start: '08:00',
     phase_end: '2020-08-03T09:05',
     phase_start: '2020-08-03T08:00',
-    week: '0010000',
+    week: '0100000',
     time_zone: 'Portugal',
   }
 
@@ -73,7 +73,7 @@ test('one day, 5 minutes, phase start before day start, phase end after day end,
     day_start: '08:00',
     phase_end: '2020-08-03T09:05',
     phase_start: '2020-08-03T08:00',
-    week: '0010000',
+    week: '0100000',
     time_zone: 'Iceland',
   }
 
@@ -90,7 +90,7 @@ test('1 minute for 2 days, phase start before day start, phase end after day end
     day_start: '08:00',
     phase_end: '2020-08-04T09:05',
     phase_start: '2020-08-03T07:00',
-    week: '0010000',
+    week: '0110000',
     time_zone: 'Iceland',
   }
 
@@ -110,7 +110,7 @@ test('1 minute for 2 days, phase start before day start, phase end after day end
     day_start: '08:00',
     phase_end: '2020-08-04T09:05',
     phase_start: '2020-08-03T07:00',
-    week: '0010000',
+    week: '0110000',
     time_zone: 'Etc/GMT-12',
   }
 
