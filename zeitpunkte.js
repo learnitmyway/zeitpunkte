@@ -7,14 +7,16 @@ export default function zeitpunkte(input) {
   const [dayStartHours, dayStartMinutes] = input.day_start.split(':')
   const [dayEndHours, dayEndMinutes] = input.day_end.split(':')
 
-  const phaseStart = moment.tz(input.phase_start, input.time_zone)
-  const phaseStartMillis = phaseStart.valueOf()
-  const phaseStartMinutes = phaseStartMillis / millisInOneMinute
-  const current = moment.tz(input.phase_end, input.time_zone)
-  const phaseEndMillis = current.valueOf()
-  const diffPhaseMillis = phaseEndMillis - phaseStartMillis
+  const phaseStartMillis = moment
+    .tz(input.phase_start, input.time_zone)
+    .valueOf()
 
-  const diffPhaseMinutes = diffPhaseMillis / millisInOneMinute
+  const phaseEndMillis = moment.tz(input.phase_end, input.time_zone).valueOf()
+
+  const diffPhaseMinutes =
+    (phaseEndMillis - phaseStartMillis) / millisInOneMinute
+
+  const phaseStartMinutes = phaseStartMillis / millisInOneMinute
 
   const arr = []
 
@@ -22,33 +24,29 @@ export default function zeitpunkte(input) {
     const currentMinute = i + phaseStartMinutes
     const currentMilli = currentMinute * millisInOneMinute
     const currentMoment = moment.tz(currentMilli, input.time_zone)
-    const currentDayStart = moment(currentMoment)
-      .hours(dayStartHours)
-      .minutes(dayStartMinutes)
-    const currentDayStartMinutes = currentDayStart.valueOf() / millisInOneMinute
 
-    const currentDayEnd = moment(currentMoment)
-      .hours(dayEndHours)
-      .minutes(dayEndMinutes)
-    const currentDayEndMinutes = currentDayEnd.valueOf() / millisInOneMinute
+    const currentDayStartMinutes =
+      moment(currentMoment)
+        .hours(dayStartHours)
+        .minutes(dayStartMinutes)
+        .valueOf() / millisInOneMinute
 
-    if (
-      weekArr[Number(currentMoment.day())] === '1' &&
+    const currentDayEndMinutes =
+      moment(currentMoment)
+        .hours(dayEndHours)
+        .minutes(dayEndMinutes)
+        .valueOf() / millisInOneMinute
+
+    const weekDayIsIncluded = weekArr[Number(currentMoment.day())] === '1'
+    const withinCurrentDay =
       currentMinute >= currentDayStartMinutes &&
       currentMinute <= currentDayEndMinutes
-    ) {
+
+    if (weekDayIsIncluded && withinCurrentDay) {
       if (arr.length === 0) {
         arr.push(currentMinute * millisInOneMinute)
       } else {
-        const lastSlot = arr[arr.length - 1]
-        const potentialSlot = lastSlot + millisInOneMinute
-        if (
-          currentMoment.isSame(moment.tz(potentialSlot, input.time_zone), 'day')
-        ) {
-          arr.push(arr[arr.length - 1] + millisInOneMinute)
-        } else {
-          arr.push(currentMilli)
-        }
+        arr.push(currentMilli)
       }
     }
   }
