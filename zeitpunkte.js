@@ -3,6 +3,7 @@ const moment = require('moment-timezone')
 const millisInOneMinute = 1000 * 60
 
 export default function zeitpunkte(input) {
+  const weekArr = input.week.split('')
   const [dayStartHours, dayStartMinutes] = input.day_start.split(':')
   const [dayEndHours, dayEndMinutes] = input.day_end.split(':')
 
@@ -20,18 +21,19 @@ export default function zeitpunkte(input) {
   for (let i = 0; i <= diffPhaseMinutes; i++) {
     const currentMinute = i + phaseStartMinutes
     const currentMilli = currentMinute * millisInOneMinute
-    const current = moment.tz(currentMilli, input.time_zone)
-    const currentDayStart = moment(current)
+    const currentMoment = moment.tz(currentMilli, input.time_zone)
+    const currentDayStart = moment(currentMoment)
       .hours(dayStartHours)
       .minutes(dayStartMinutes)
     const currentDayStartMinutes = currentDayStart.valueOf() / millisInOneMinute
 
-    const currentDayEnd = moment(current)
+    const currentDayEnd = moment(currentMoment)
       .hours(dayEndHours)
       .minutes(dayEndMinutes)
     const currentDayEndMinutes = currentDayEnd.valueOf() / millisInOneMinute
 
     if (
+      weekArr[Number(currentMoment.day())] === '1' &&
       currentMinute >= currentDayStartMinutes &&
       currentMinute <= currentDayEndMinutes
     ) {
@@ -41,9 +43,7 @@ export default function zeitpunkte(input) {
         const lastSlot = arr[arr.length - 1]
         const potentialSlot = lastSlot + millisInOneMinute
         if (
-          moment
-            .tz(currentMilli, input.time_zone)
-            .isSame(moment.tz(potentialSlot, input.time_zone), 'day')
+          currentMoment.isSame(moment.tz(potentialSlot, input.time_zone), 'day')
         ) {
           arr.push(arr[arr.length - 1] + millisInOneMinute)
         } else {

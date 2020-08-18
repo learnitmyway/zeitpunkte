@@ -115,12 +115,31 @@ test('1 minute for 2 days, phase start before day start, phase end after day end
   }
 
   const actual = zeitpunkte(input)
-  console.log(actual)
 
   expect(actual).toEqual([
     new Date('Aug 02 2020 20:00 GMT+0000'),
     new Date('Aug 02 2020 20:01 GMT+0000'),
     new Date('Aug 03 2020 20:00 GMT+0000'),
     new Date('Aug 03 2020 20:01 GMT+0000'),
+  ])
+})
+
+test('1 minute Mo and We, phase start before day start, phase end after day end, GMT+0', () => {
+  const input = {
+    day_end: '08:01',
+    day_start: '08:00',
+    phase_end: '2020-08-06T09:05',
+    phase_start: '2020-08-02T07:00',
+    week: '0101000',
+    time_zone: 'Etc/GMT+0',
+  }
+
+  const actual = zeitpunkte(input)
+
+  expect(actual).toEqual([
+    new Date('Aug 03 2020 08:00 GMT+0000'),
+    new Date('Aug 03 2020 08:01 GMT+0000'),
+    new Date('Aug 05 2020 08:00 GMT+0000'),
+    new Date('Aug 05 2020 08:01 GMT+0000'),
   ])
 })
