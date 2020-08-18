@@ -43,9 +43,9 @@ export default function zeitpunkte(input) {
       currentMinute <= currentDayEndMinutes
 
     if (weekDayIsIncluded && withinCurrentDay) {
-      arr.push(currentMilli)
+      arr.push(new Date(currentMilli))
     }
   }
 
-  return arr.map((val) => new Date(val))
+  return arr
 }
