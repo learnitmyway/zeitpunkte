@@ -43,11 +43,7 @@ export default function zeitpunkte(input) {
       currentMinute <= currentDayEndMinutes
 
     if (weekDayIsIncluded && withinCurrentDay) {
-      if (arr.length === 0) {
-        arr.push(currentMinute * millisInOneMinute)
-      } else {
-        arr.push(currentMilli)
-      }
+      arr.push(currentMilli)
     }
   }
 
