@@ -143,3 +143,23 @@ test('1 minute Mo and We, phase start before day start, phase end after day end,
     new Date('Aug 05 2020 08:01 GMT+0000'),
   ])
 })
+
+test('same day of week, multiple weeks', () => {
+  const input = {
+    day_end: '08:01',
+    day_start: '08:00',
+    phase_end: '2020-08-10T08:01',
+    phase_start: '2020-08-03T08:00',
+    week: '0100000',
+    time_zone: 'Etc/GMT+0',
+  }
+
+  const actual = zeitpunkte(input)
+
+  expect(actual).toEqual([
+    new Date('Aug 03 2020 08:00 GMT+0000'),
+    new Date('Aug 03 2020 08:01 GMT+0000'),
+    new Date('Aug 10 2020 08:00 GMT+0000'),
+    new Date('Aug 10 2020 08:01 GMT+0000'),
+  ])
+})
