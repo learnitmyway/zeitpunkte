@@ -9,7 +9,8 @@ export default function zeitpunkte(input) {
   const phaseStart = moment(input.phase_start)
   const phaseStartMillis = phaseStart.valueOf()
   const phaseStartMinutes = phaseStartMillis / millisInOneMinute
-  const phaseEndMillis = moment(input.phase_end).valueOf()
+  const phaseEnd = moment(input.phase_end)
+  const phaseEndMillis = phaseEnd.valueOf()
   const diffPhaseMillis = phaseEndMillis - phaseStartMillis
 
   const diffPhaseMinutes = diffPhaseMillis / millisInOneMinute
@@ -20,12 +21,19 @@ export default function zeitpunkte(input) {
   const phaseStartDayStartMillis = phaseStartDayStart.valueOf()
   const phaseStartDayStartMinutes = phaseStartDayStartMillis / millisInOneMinute
 
+  const phaseEndDayEnd = phaseEnd.hours(dayEndHours).minutes(dayEndMinutes)
+  const phaseEndDayEndMillis = phaseEndDayEnd.valueOf()
+  const phaseEndDayEndMinutes = phaseEndDayEndMillis / millisInOneMinute
+
   const arr = []
 
   for (let i = 0; i <= diffPhaseMinutes; i++) {
     const currentMinute = i + phaseStartMinutes
 
-    if (currentMinute >= phaseStartDayStartMinutes) {
+    if (
+      currentMinute >= phaseStartDayStartMinutes &&
+      currentMinute <= phaseEndDayEndMinutes
+    ) {
       if (arr.length === 0) {
         arr.push(currentMinute * millisInOneMinute)
       } else {
